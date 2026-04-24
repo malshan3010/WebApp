@@ -2,21 +2,24 @@ import express from 'express' //ModulerJS
 //const express = require("express") //CommonJS
 import userRoute from './routes/userRoutes.js'
 import inventoryRoute from './routes/inventoryRoutes.js'
+import authRoute from './routes/authRoute.js'
 import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+
+
+dotenv.config();
 
 const app = express();
-const PORT = 5000;
-const MONGO_URI = "mongodb+srv://malshan:1234@cluster0.0pz3yfu.mongodb.net/?appName=Cluster0"
 
 app.use(express.json());
 
 app.use('/api/users', userRoute) //localhost:5000/api/users/
 app.use('/api/inventories' , inventoryRoute) //localhost:5000/api/inventories/
+app.use('/api/auth', authRoute) //localhost:5000/api/auth/
 
-
-mongoose.connect(MONGO_URI).then(()=>{
+mongoose.connect(process.env.MONGO_URI).then(()=>{
     console.log("Mongodb connected");
-    app.listen(PORT, ()=>{
-        console.log(`Server running on ${PORT}`)
+    app.listen(process.env.PORT, ()=>{
+        console.log(`Server running on ${process.env.PORT}`)
     })
 })
